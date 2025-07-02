@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تحليلات Babylon Beauty</title>
+  <style>
+    body { font-family: sans-serif; direction: rtl; padding: 20px; }
+    .card { border: 1px solid #ccc; border-radius: 6px; padding: 15px; margin: 10px 0; background: #f9f9f9; }
+    h2 { color: #333; }
+  </style>
+</head>
+<body>
+  <h1>تحليلات الإدارة</h1>
+
+  <div class="card" id="totalBookings">📦 عدد الحجوزات: ...</div>
+  <div class="card" id="topService">✨ الخدمة الأكثر طلبًا: ...</div>
+  <div class="card" id="avgRating">⭐ متوسط التقييمات: ...</div>
+
+  <script>
+    // بيانات وهمية مأخوذة من التخزين المحلي (للعرض التجريبي)
+    const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+    const reviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+
+    // عدد الحجوزات
+    const total = bookings.length;
+    document.getElementById("totalBookings").innerHTML = "📦 عدد الحجوزات: " + total;
+
+    // أكثر خدمة طلبًا
+    const services = {};
+    bookings.forEach(b => {
+      if (b.service) services[b.service] = (services[b.service] || 0) + 1;
+    });
+
+    const topService = Object.entries(services).sort((a, b) => b[1] - a[1])[0];
+    document.getElementById("topService").innerHTML =
+      topService ? `✨ الخدمة الأكثر طلبًا: ${topService[0]} (${topService[1]} مرة)` : "لا توجد بيانات";
+
+    // متوسط التقييمات
+    const avgRating =
+      reviews.length > 0
+        ? (reviews.reduce((sum, r) => sum + Number(r.rating || 0), 0) / reviews.length).toFixed(1)
+        : "لا توجد تقييمات";
+
+    document.getElementById("avgRating").innerHTML = "⭐ متوسط التقييمات: " + avgRating;
+  </script>
+</body>
+</html>

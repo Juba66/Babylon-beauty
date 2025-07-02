@@ -1,0 +1,29 @@
+
+body {
+  font-family: Arial, sans-serif;
+  direction: rtl;
+  padding: 20px;
+  background-color: #fdfdfd;
+  color: #333;
+}
+input, select, button, textarea {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 300px;
+  max-width: 90%;
+}
+button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: #0066cc;
+}

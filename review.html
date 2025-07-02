@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تقييم الخدمة - Babylon Beauty</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>تقييم الحجز</h1>
+    <form id="reviewForm">
+        <label for="rating">اختر التقييم:</label>
+        <select id="rating" required>
+            <option value="">اختر...</option>
+            <option value="5">5 نجوم</option>
+            <option value="4">4 نجوم</option>
+            <option value="3">3 نجوم</option>
+            <option value="2">2 نجوم</option>
+            <option value="1">1 نجمة</option>
+        </select>
+        <br>
+        <label for="comment">تعليق:</label>
+        <textarea id="comment" placeholder="أخبرنا عن تجربتك" rows="4" cols="50"></textarea>
+        <br>
+        <button type="submit">إرسال التقييم</button>
+    </form>
+    <div id="message"></div>
+    <script type="module" src="review.js"></script>
+</body>
+</html>

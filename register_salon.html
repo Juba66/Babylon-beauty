@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تسجيل صالون - Babylon Beauty</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>طلب انضمام صالون</h1>
+  <form id="salonForm">
+    <input type="text" id="name" placeholder="اسم الصالون" required>
+    <input type="text" id="owner" placeholder="اسم صاحب الصالون" required>
+    <input type="text" id="phone" placeholder="رقم الهاتف" required>
+    <input type="text" id="city" placeholder="المدينة" required>
+    <textarea id="services" placeholder="الخدمات المقدمة" required></textarea>
+    <button type="submit">إرسال الطلب</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    document.getElementById("salonForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const owner = document.getElementById("owner").value;
+      const phone = document.getElementById("phone").value;
+      const city = document.getElementById("city").value;
+      const services = document.getElementById("services").value;
+
+      // حفظ الطلبات بشكل وهمي محلياً - يمكن ربطه بـ Firebase لاحقاً
+      let salons = JSON.parse(localStorage.getItem("salonRequests") || "[]");
+      salons.push({ name, owner, phone, city, services });
+      localStorage.setItem("salonRequests", JSON.stringify(salons));
+
+      document.getElementById("response").innerText = "✅ تم إرسال الطلب بنجاح. سنقوم بمراجعته قريبًا.";
+      document.getElementById("salonForm").reset();
+    });
+  </script>
+</body>
+</html>

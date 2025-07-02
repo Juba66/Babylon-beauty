@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>احجز موعدك - Babylon Beauty</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>احجز موعدك حسب الوقت المتاح</h2>
+  <form id="slotForm">
+    <label>اختر التاريخ:</label>
+    <input type="date" id="bookingDate" required>
+
+    <label>اختر الوقت:</label>
+    <select id="timeSlot" required>
+      <option value="">اختر موعداً</option>
+    </select>
+
+    <button type="submit">تأكيد الحجز</button>
+  </form>
+
+  <script>
+    const slotSelect = document.getElementById("timeSlot");
+    const dateInput = document.getElementById("bookingDate");
+
+    const allSlots = [
+      "10:00", "11:00", "12:00",
+      "13:00", "14:00", "15:00",
+      "16:00", "17:00"
+    ];
+
+    function loadSlots() {
+      // محاكاة جلب المواعيد المحجوزة من قاعدة بيانات
+      const booked = JSON.parse(localStorage.getItem("bookedSlots") || "{}");
+      const selectedDate = dateInput.value;
+      slotSelect.innerHTML = '<option value="">اختر موعداً</option>';
+
+      allSlots.forEach(time => {
+        const isBooked = booked[selectedDate]?.includes(time);
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time + (isBooked ? " (محجوز)" : "");
+        option.disabled = isBooked;
+        slotSelect.appendChild(option);
+      });
+    }
+
+    dateInput.addEventListener("change", loadSlots);
+
+    document.getElementById("slotForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const date = dateInput.value;
+      const time = slotSelect.value;
+
+      if (!date || !time) return;
+
+      const booked = JSON.parse(localStorage.getItem("bookedSlots") || "{}");
+      booked[date] = booked[date] || [];
+      booked[date].push(time);
+      localStorage.setItem("bookedSlots", JSON.stringify(booked));
+
+      alert("✅ تم حجز الموعد بنجاح!");
+      loadSlots();
+    });
+  </script>
+</body>
+</html>
