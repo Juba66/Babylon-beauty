@@ -10,6 +10,13 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
+// إخفاء التحذير إذا كان المستخدم مسجلًا الدخول
+onAuthStateChanged(auth, (user) => {
+  if (user && document.getElementById("auth-warning")) {
+    document.getElementById("auth-warning").style.display = "none";
+  }
+});
+
 document.getElementById("booking-form").addEventListener("submit", function(e) {
   e.preventDefault();
 
