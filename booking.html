@@ -2,19 +2,19 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>الحجز - Babylon Beauty</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>حجز موعد</title>
 </head>
 <body>
-  <h2>احجز خدمتك</h2>
-  <form id="bookingForm">
-    <input type="text" id="name" placeholder="اسمك" required>
-    <input type="text" id="service" placeholder="الخدمة المطلوبة" required>
-    <input type="date" id="date" required>
-    <input type="time" id="time" required>
+  <h2>احجز موعدك</h2>
+  <form id="booking-form">
+    <input type="text" id="name" placeholder="الاسم الكامل" required />
+    <input type="text" id="service" placeholder="الخدمة المطلوبة" required />
+    <input type="date" id="date" required />
     <button type="submit">تأكيد الحجز</button>
   </form>
-  <script type="module" src="booking_firebase.js"></script>
+
+  <script type="module" src="./firebase.js"></script>
+  <script type="module" src="./booking.js"></script>
 </body>
 </html>
