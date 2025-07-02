@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>تصفية الصالونات</title>
+  <style>
+    body { font-family: Arial; direction: rtl; text-align: center; padding: 20px; }
+    .filters { margin-bottom: 20px; }
+    .salon { border: 1px solid #ccc; padding: 10px; margin: 10px auto; width: 80%; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h2>🔍 تصفية وعرض الصالونات</h2>
+
+  <div class="filters">
+    <label>اختر المدينة:
+      <select id="city">
+        <option value="">الكل</option>
+        <option value="بغداد">بغداد</option>
+        <option value="أربيل">أربيل</option>
+        <option value="البصرة">البصرة</option>
+      </select>
+    </label>
+
+    <label>اختر الخدمة:
+      <select id="service">
+        <option value="">الكل</option>
+        <option value="شعر">شعر</option>
+        <option value="مكياج">مكياج</option>
+        <option value="عناية بالبشرة">عناية بالبشرة</option>
+      </select>
+    </label>
+
+    <button id="nearby">📍 اعرض القريبة مني</button>
+  </div>
+
+  <div id="results">جاري التحميل...</div>
+
+  <script type="module" src="./search.js"></script>
+</body>
+</html>

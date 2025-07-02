@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>تقييم الحجز</title>
+</head>
+<body>
+  <h2>قيّم تجربتك</h2>
+  <form id="rating-form">
+    <label for="rating">اختر عدد النجوم:</label>
+    <select id="rating" required>
+      <option value="1">⭐</option>
+      <option value="2">⭐⭐</option>
+      <option value="3">⭐⭐⭐</option>
+      <option value="4">⭐⭐⭐⭐</option>
+      <option value="5">⭐⭐⭐⭐⭐</option>
+    </select><br/><br/>
+    <textarea id="comment" placeholder="تعليقك (اختياري)"></textarea><br/>
+    <button type="submit">إرسال التقييم</button>
+  </form>
+
+  <script type="module" src="./firebase.js"></script>
+  <script type="module" src="./rate.js"></script>
+</body>
+</html>

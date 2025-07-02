@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>معرض صور الصالون</title>
+  <style>
+    body { font-family: Arial; padding: 20px; text-align: center; direction: rtl; }
+    .gallery { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .gallery img { width: 200px; height: 150px; object-fit: cover; border-radius: 5px; }
+    select { padding: 10px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h2>📸 معرض صور الصالون</h2>
+  <label for="salon">اختر صالون:</label>
+  <select id="salon">
+    <option value="glamour">Glamour Beauty</option>
+    <option value="elegance">Elegance Salon</option>
+    <option value="stylezone">Style Zone</option>
+  </select>
+
+  <div class="gallery" id="gallery"></div>
+
+  <script type="module" src="./salon-gallery.js"></script>
+</body>
+</html>

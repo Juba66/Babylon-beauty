@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>لوحة إدارة Babylon Beauty</title>
+  <style>
+    body { font-family: Arial; padding: 20px; direction: rtl; background-color: #f9f9f9; text-align: center; }
+    .card { background: white; border-radius: 8px; padding: 20px; margin: 10px auto; width: 80%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    h2 { color: #444; }
+    .metrics { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+    .metric { background: #fff; border: 1px solid #ccc; padding: 15px 30px; border-radius: 6px; min-width: 150px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h2>📊 لوحة إحصائيات الإدارة</h2>
+  <div class="metrics">
+    <div class="metric" id="totalUsers">المستخدمين: ...</div>
+    <div class="metric" id="totalBookings">الحجوزات: ...</div>
+    <div class="metric" id="totalSalons">الصالونات: ...</div>
+    <div class="metric" id="averageRating">متوسط التقييم: ...</div>
+  </div>
+
+  <script type="module" src="./firebase.js"></script>
+  <script type="module" src="./admin-dashboard.js"></script>
+</body>
+</html>

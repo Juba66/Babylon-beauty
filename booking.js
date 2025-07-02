@@ -10,7 +10,6 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-// إخفاء التحذير إذا كان المستخدم مسجلًا الدخول
 onAuthStateChanged(auth, (user) => {
   if (user && document.getElementById("auth-warning")) {
     document.getElementById("auth-warning").style.display = "none";
@@ -24,22 +23,32 @@ document.getElementById("booking-form").addEventListener("submit", function(e) {
   const service = document.getElementById("service").value;
   const date = document.getElementById("date").value;
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      addDoc(collection(db, "bookings"), {
-        userId: user.uid,
-        name,
-        service,
-        date,
-        createdAt: serverTimestamp()
-      })
-      .then(() => {
-        alert("تم إرسال الحجز بنجاح!");
-        document.getElementById("booking-form").reset();
-      })
-      .catch((error) => {
+      try {
+        const docRef = await addDoc(collection(db, "bookings"), {
+          userId: user.uid,
+        paymentMethod: payment,
+          name,
+          service,
+          date,
+          createdAt: serverTimestamp()
+        });
+
+        const payment = document.getElementById("payment").value;
+    const bookingData = {
+          name,
+          service,
+          date,
+          id: docRef.id,
+          createdAt: new Date().toISOString()
+        };
+
+        localStorage.setItem("lastBooking", JSON.stringify(bookingData));
+        window.location.href = "receipt.html";
+      } catch (error) {
         alert("حدث خطأ: " + error.message);
-      });
+      }
     } else {
       alert("يجب تسجيل الدخول أولاً.");
     }

@@ -2,29 +2,23 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>الدفع الإلكتروني - Babylon Beauty</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>الدفع</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 50px; direction: rtl; }
+    button { padding: 15px 30px; font-size: 18px; background: green; color: white; border: none; border-radius: 6px; }
+  </style>
 </head>
 <body>
-  <h1>الدفع الإلكتروني</h1>
-  <form id="paymentForm">
-    <label for="cardNumber">رقم البطاقة:</label>
-    <input type="text" id="cardNumber" required placeholder="1234 5678 9012 3456">
+  <h2>💳 بوابة الدفع</h2>
+  <p>اضغط على الزر لإتمام عملية الدفع (وهمي).</p>
+  <button onclick="confirmPayment()">ادفع الآن</button>
 
-    <label for="name">الاسم على البطاقة:</label>
-    <input type="text" id="name" required>
-
-    <label for="expiry">تاريخ الانتهاء:</label>
-    <input type="text" id="expiry" required placeholder="MM/YY">
-
-    <label for="cvv">رمز CVV:</label>
-    <input type="text" id="cvv" required placeholder="123">
-
-    <button type="submit">إتمام الدفع</button>
-  </form>
-
-  <div id="message"></div>
-  <script src="payment.js"></script>
+  <script>
+    function confirmPayment() {
+      alert("✅ تم الدفع بنجاح!");
+      window.location.href = "receipt.html";
+    }
+  </script>
 </body>
 </html>

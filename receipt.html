@@ -2,13 +2,28 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>إيصال الحجز - Babylon Beauty</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>إيصال الحجز</title>
 </head>
 <body>
-  <h1>إيصال الحجز</h1>
-  <div id="receipt">جاري تحميل تفاصيل الحجز...</div>
-  <script type="module" src="receipt.js"></script>
+  <h2>🧾 إيصال تأكيد الحجز</h2>
+  <div id="receipt-container">جاري التحميل...</div>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem("lastBooking"));
+    const container = document.getElementById("receipt-container");
+
+    if (data) {
+      container.innerHTML = `
+        <p><strong>الاسم:</strong> ${data.name}</p>
+        <p><strong>الخدمة:</strong> ${data.service}</p>
+        <p><strong>التاريخ:</strong> ${data.date}</p>
+        <p><strong>رقم الحجز:</strong> ${data.id}</p>
+        <p><strong>تاريخ الحجز:</strong> ${new Date(data.createdAt).toLocaleString()}</p>
+      `;
+    } else {
+      container.innerHTML = "<p>لا توجد بيانات حجز.</p>";
+    }
+  </script>
 </body>
 </html>
