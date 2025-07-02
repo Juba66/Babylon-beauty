@@ -1,29 +1,61 @@
+/* الخط الأساسي */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap');
 
 body {
-  font-family: Arial, sans-serif;
-  direction: rtl;
-  padding: 20px;
-  background-color: #fdfdfd;
-  color: #333;
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    background-color: #fff5f8;
+    color: #3a3a3a;
 }
-input, select, button, textarea {
-  display: block;
-  margin: 10px 0;
-  padding: 10px;
-  width: 300px;
-  max-width: 90%;
+
+/* رأس الصفحة */
+header {
+    background-color: #f8e1e7;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #7b2e5d;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+/* بطاقات */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* أزرار */
 button {
-  background-color: #000;
-  color: #fff;
-  border: none;
-  cursor: pointer;
+    background-color: #e4b3ce;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+button:hover {
+    background-color: #cf93b6;
 }
+
+/* العناوين */
+h1, h2, h3 {
+    color: #8a3b72;
+}
+
 a {
-  text-decoration: none;
-  color: #0066cc;
+    color: #8a3b72;
+    text-decoration: none;
 }
