@@ -1,15 +1,190 @@
 
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <title>حجوزاتي</title>
+  <style>
+    body { font-family: Arial; background: #f3f3f3; padding: 20px; }
+    .booking { background: white; margin-bottom: 15px; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
+    .booking h4 { margin: 0 0 5px; }
+    .booking p { margin: 4px 0; }
+  </style>
 </head>
 <body>
-  <h2>الحجوزات الخاصة بك</h2>
-  <div id="bookings-list">جاري التحميل...</div>
 
-  <script type="module" src="./firebase.js"></script>
-  <script type="module" src="./my-bookings.js"></script>
+<div style="position: fixed; top: 10px; left: 10px; z-index: 10000;">
+  <select id="language-select" onchange="changeLanguage(this.value)">
+    <option value="ar">العربية</option>
+    <option value="en">English</option>
+    <option value="ku">کوردی</option>
+  </select>
+</div>
+
+  <h2>حجوزاتي</h2>
+  <div id="bookings-list">جارٍ تحميل الحجوزات...</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWB3LNZvlR4YCr_f1t3iE97-jMhx38Ac0",
+      authDomain: "babylon-beauty.firebaseapp.com",
+      projectId: "babylon-beauty",
+      storageBucket: "babylon-beauty.appspot.com",
+      messagingSenderId: "741891084943",
+      appId: "1:741891084943:web:4d411b385c50dd2acf16fa",
+      measurementId: "G-Z1LWK7RWH3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const bookingsDiv = document.getElementById("bookings-list");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const q = query(collection(db, "bookings"), where("userId", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+        bookingsDiv.innerHTML = "";
+
+        if (querySnapshot.empty) {
+          bookingsDiv.textContent = "لا توجد حجوزات.";
+          return;
+        }
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const bookingEl = document.createElement("div");
+          bookingEl.className = "booking";
+          bookingEl.innerHTML = `
+            <h4>الخدمة: ${data.service}</h4>
+            <p>التاريخ: ${data.date}</p>
+            <p>الوقت: ${data.time}</p>
+            <p>رقم الهاتف: ${data.phone}</p>
+          `;
+          bookingsDiv.appendChild(bookingEl);
+        });
+      } else {
+        bookingsDiv.innerHTML = "يرجى تسجيل الدخول لعرض الحجوزات.";
+      }
+    });
+  </script>
+
+<script>
+  function changeLanguage(lang) {
+    localStorage.setItem("lang", lang);
+    location.reload();
+  }
+
+  async function loadTranslation() {
+    const lang = localStorage.getItem("lang") || "ar";
+    document.getElementById("language-select").value = lang;
+    const res = await fetch("lang/" + lang + ".json");
+    const dict = await res.json();
+    for (const key in dict) {
+      const el = document.querySelector("[data-i18n='" + key + "']");
+      if (el) el.textContent = dict[key];
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", loadTranslation);
+</script>
+
+
+<h3>تقويم حجوزاتي</h3>
+<div id="calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; margin-top: 20px;"></div>
+
+<script>
+  const calendarEl = document.getElementById("calendar");
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDayIndex = new Date(year, month, 1).getDay();
+  const weekdays = ["أحد", "إثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت"];
+
+  weekdays.forEach(d => {
+    const div = document.createElement("div");
+    div.style.fontWeight = "bold";
+    div.textContent = d;
+    calendarEl.appendChild(div);
+  });
+
+  for (let i = 0; i < firstDayIndex; i++) {
+    const empty = document.createElement("div");
+    calendarEl.appendChild(empty);
+  }
+
+  for (let i = 1; i <= daysInMonth; i++) {
+    const day = document.createElement("div");
+    day.style.border = "1px solid #ccc";
+    day.style.padding = "10px";
+    day.style.background = "#fff";
+    day.textContent = i;
+    calendarEl.appendChild(day);
+  }
+</script>
+
+
+<div id="rating-modal" style="display: none; position: fixed; top: 0; left: 0; right:0; bottom:0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+  <div style="background: white; padding: 20px; border-radius: 8px; width: 300px;">
+    <h3>قيّم تجربتك</h3>
+    <div id="stars" style="font-size: 24px; margin: 10px 0;"></div>
+    <textarea id="rating-comment" placeholder="اكتب تعليقك..." style="width: 100%; height: 80px;"></textarea>
+    <button onclick="submitRating()">إرسال</button>
+  </div>
+</div>
+
+<script>
+  let selectedStars = 0;
+
+  function showRatingModal(bookingId) {
+    localStorage.setItem("ratingBookingId", bookingId);
+    const modal = document.getElementById("rating-modal");
+    modal.style.display = "flex";
+    drawStars();
+  }
+
+  function drawStars() {
+    const starsDiv = document.getElementById("stars");
+    starsDiv.innerHTML = "";
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement("span");
+      star.textContent = i <= selectedStars ? "★" : "☆";
+      star.style.cursor = "pointer";
+      star.onclick = () => {
+        selectedStars = i;
+        drawStars();
+      };
+      starsDiv.appendChild(star);
+    }
+  }
+
+  async function submitRating() {
+    const bookingId = localStorage.getItem("ratingBookingId");
+    const comment = document.getElementById("rating-comment").value;
+
+    if (selectedStars === 0 || comment.trim() === "") {
+      alert("يرجى اختيار عدد النجوم وكتابة تعليق.");
+      return;
+    }
+
+    const docRef = doc(db, "ratings", bookingId);
+    await setDoc(docRef, {
+      stars: selectedStars,
+      comment: comment,
+      date: new Date().toISOString()
+    });
+
+    document.getElementById("rating-modal").style.display = "none";
+    alert("✅ تم إرسال التقييم، شكرًا لك!");
+  }
+</script>
+
 </body>
 </html>

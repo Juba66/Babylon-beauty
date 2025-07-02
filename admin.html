@@ -1,14 +1,147 @@
 
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>لوحة التحكم - Babylon Beauty</title>
-  <link rel="stylesheet" href="style.css">
+  <title>لوحة التحكم | Babylon Beauty</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+    h2 { color: #444; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; background: white; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: right; }
+    th { background: #eee; }
+    .section { margin-bottom: 40px; }
+  </style>
 </head>
 <body>
-  <h1>لوحة تحكم الحجز</h1>
-  <div id="bookingList">جاري تحميل الحجوزات...</div>
-  <script type="module" src="admin.js"></script>
+
+<div style="position: fixed; top: 10px; right: 10px; z-index: 9999;">
+  <button onclick="logout()" style="padding:8px 16px; background:#f44336; color:white; border:none; border-radius:4px;">تسجيل الخروج</button>
+</div>
+
+  <h2>لوحة تحكم الإدارة</h2>
+
+  
+<div class="section">
+  <h3>الإحصائيات</h3>
+  <div style="display: flex; gap: 20px;">
+    <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; flex: 1;">
+      <h4>عدد الصالونات</h4>
+      <p id="count-salons" style="font-size: 24px;">0</p>
+    </div>
+    <div style="background: #fff3e0; padding: 20px; border-radius: 8px; flex: 1;">
+      <h4>عدد الحجوزات</h4>
+      <p id="count-bookings" style="font-size: 24px;">0</p>
+    </div>
+    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; flex: 1;">
+      <h4>عدد المستخدمين</h4>
+      <p id="count-users" style="font-size: 24px;">0</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+    <h3>الحجوزات</h3>
+    <table id="bookings-table">
+      <thead>
+        <tr>
+          <th>الصالون</th>
+          <th>الخدمة</th>
+          <th>التاريخ</th>
+          <th>الوقت</th>
+          <th>المستخدم</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>الصالونات</h3>
+    <table id="salons-table">
+      <thead>
+        <tr>
+          <th>الاسم</th>
+          <th>المدينة</th>
+          <th>الوصف</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  
+<script type="module">
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWB3LNZvlR4YCr_f1t3iE97-jMhx38Ac0",
+      authDomain: "babylon-beauty.firebaseapp.com",
+      projectId: "babylon-beauty",
+      storageBucket: "babylon-beauty.appspot.com",
+      messagingSenderId: "741891084943",
+      appId: "1:741891084943:web:4d411b385c50dd2acf16fa"
+    };
+
+    const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    async function loadBookings() {
+      const snap = await getDocs(collection(db, "bookings"));
+      const table = document.querySelector("#bookings-table tbody");
+      table.innerHTML = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${d.salonName || ""}</td>
+          <td>${d.service}</td>
+          <td>${d.date}</td>
+          <td>${d.time}</td>
+          <td>${d.name}</td>
+        `;
+        table.appendChild(tr);
+      });
+    }
+
+    async function loadSalons() {
+      const snap = await getDocs(collection(db, "salons"));
+      const table = document.querySelector("#salons-table tbody");
+      table.innerHTML = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${d.name}</td>
+          <td>${d.city || ""}</td>
+          <td>${d.description || ""}</td>
+        `;
+        table.appendChild(tr);
+      });
+    }
+
+    
+onAuthStateChanged(auth, (user) => {
+  if (!user || user.email !== "admin@babylon.com") {
+    alert("❌ غير مصرح لك بالدخول إلى لوحة التحكم.");
+    window.location.href = "login.html";
+  }
+});
+
+    loadStats();
+    loadBookings();
+    loadSalons();
+  
+function logout() {
+  auth.signOut().then(() => {
+    window.location.href = "login.html";
+  });
+}
+
+</script>
 </body>
 </html>

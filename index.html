@@ -1,16 +1,189 @@
+
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>Babylon Beauty - الرئيسية</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Babylon Beauty</title>
+  <style>
+    body { font-family: Arial; background: #f3f3f3; padding: 20px; }
+    .salon-card {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #ccc;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <header>Babylon Beauty</header>
-    <div class="card">
-        <h2>مرحباً بك في بابيلون بيوتي</h2>
-        <p>احجزي موعدك الآن في أفضل صالونات التجميل.</p>
-        <a href="booking.html"><button>احجزي الآن</button></a>
-    </div>
+
+<div style="position: fixed; top: 10px; left: 10px; z-index: 10000;">
+  <select id="language-select" onchange="changeLanguage(this.value)">
+    <option value="ar">العربية</option>
+    <option value="en">English</option>
+    <option value="ku">کوردی</option>
+  </select>
+</div>
+
+
+<h2>البحث عن الصالونات</h2>
+
+<div style="margin-bottom: 20px; display: flex; gap: 10px;">
+  <select id="city-filter">
+    <option value="">كل المدن</option>
+    <option value="بغداد">بغداد</option>
+    <option value="أربيل">أربيل</option>
+    <option value="البصرة">البصرة</option>
+    <option value="الموصل">الموصل</option>
+  </select>
+
+  <select id="service-filter">
+    <option value="">كل الخدمات</option>
+    <option value="قص شعر">قص شعر</option>
+    <option value="مكياج">مكياج</option>
+    <option value="عناية بالبشرة">عناية بالبشرة</option>
+  </select>
+
+  <button onclick="applyFilters()">تصفية</button>
+</div>
+
+<div id="salon-list">
+  <!-- سيتم تحميل الصالونات هنا -->
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAWB3LNZvlR4YCr_f1t3iE97-jMhx38Ac0",
+    authDomain: "babylon-beauty.firebaseapp.com",
+    projectId: "babylon-beauty",
+    storageBucket: "babylon-beauty.appspot.com",
+    messagingSenderId: "741891084943",
+    appId: "1:741891084943:web:4d411b385c50dd2acf16fa"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function loadSalons() {
+    const querySnapshot = await getDocs(collection(db, "salons"));
+    const container = document.getElementById("salon-list");
+    container.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const div = document.createElement("div");
+      div.className = "salon-card";
+      div.setAttribute("data-city", data.city || "");
+      div.setAttribute("data-services", (data.services || []).map(s => s.name).join(","));
+      div.innerHTML = `
+        <h3>${data.name}</h3>
+        <p>${data.description || ""}</p>
+        <p><strong>المدينة:</strong> ${data.city || "غير محددة"}</p>
+      `;
+      div.onclick = () => {
+        window.location.href = "salon.html?id=" + doc.id;
+      };
+      container.appendChild(div);
+    });
+  }
+
+  window.applyFilters = function() {
+    const city = document.getElementById("city-filter").value;
+    const service = document.getElementById("service-filter").value;
+    const cards = document.querySelectorAll(".salon-card");
+    cards.forEach(card => {
+      const cardCity = card.getAttribute("data-city");
+      const services = card.getAttribute("data-services") || "";
+      const matchesCity = !city || cardCity === city;
+      const matchesService = !service || services.includes(service);
+      card.style.display = (matchesCity && matchesService) ? "block" : "none";
+    });
+  };
+
+  loadSalons();
+
+</html>
+
+<script>
+  function toRad(value) {
+    return value * Math.PI / 180;
+  }
+
+  function distance(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  let userLat = null, userLon = null;
+
+  navigator.geolocation.getCurrentPosition(pos => {
+    userLat = pos.coords.latitude;
+    userLon = pos.coords.longitude;
+    console.log("User location:", userLat, userLon);
+  });
+
+  async function loadSalons() {
+    const querySnapshot = await getDocs(collection(db, "salons"));
+    const container = document.getElementById("salon-list");
+    container.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const div = document.createElement("div");
+      div.className = "salon-card";
+      div.setAttribute("data-city", data.city || "");
+      div.setAttribute("data-services", (data.services || []).map(s => s.name).join(","));
+
+      let distanceText = "";
+      if (userLat && userLon && data.location) {
+        const d = distance(userLat, userLon, data.location.lat, data.location.lng).toFixed(2);
+        distanceText = `<p><strong>المسافة:</strong> ${d} كم</p>`;
+      }
+
+      div.innerHTML = `
+        <h3>${data.name}</h3>
+        <p>${data.description || ""}</p>
+        <p><strong>المدينة:</strong> ${data.city || "غير محددة"}</p>
+        ${distanceText}
+      `;
+      div.onclick = () => {
+        window.location.href = "salon.html?id=" + doc.id;
+      };
+      container.appendChild(div);
+    });
+  }
+
+  loadSalons();
+</script>
+
+
+<script>
+  function changeLanguage(lang) {
+    localStorage.setItem("lang", lang);
+    location.reload();
+  }
+
+  async function loadTranslation() {
+    const lang = localStorage.getItem("lang") || "ar";
+    document.getElementById("language-select").value = lang;
+    const res = await fetch("lang/" + lang + ".json");
+    const dict = await res.json();
+    for (const key in dict) {
+      const el = document.querySelector("[data-i18n='" + key + "']");
+      if (el) el.textContent = dict[key];
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", loadTranslation);
+</script>
+
 </body>
 </html>

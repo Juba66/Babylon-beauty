@@ -1,7 +1,11 @@
 {
-  "welcome": "Welcome to Babylon Beauty",
-  "booking": "Book Appointment",
-  "gallery": "Gallery",
+  "title": "Babylon Beauty",
+  "book_now": "Book Now",
+  "select_city": "Select City",
+  "select_service": "Select Service",
+  "filter": "Filter",
+  "my_bookings": "My Bookings",
   "login": "Login",
-  "logout": "Logout"
+  "logout": "Logout",
+  "booking_success": "✅ Your booking has been confirmed!"
 }

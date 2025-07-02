@@ -1,56 +1,46 @@
 
-# 💅 Babylon Beauty
+# Babylon Beauty 💅🌟
 
-تطبيق ويب متكامل لحجز مواعيد الصالونات في الشرق الأوسط 🇮🇶  
-مستوحى من تطبيق Treatwell العالمي، ومصمم خصيصًا لتلبية احتياجات المستخدمين باللغة العربية، مع دعم للغة ثانية.
+A salon booking platform inspired by Treatwell, designed for the Middle East, built with Firebase and multilingual support.
 
----
+## 🌍 Languages / اللغات المدعومة
+- English
+- العربية
+- کوردی
 
-## 🖼️ صور من التطبيق
+## 📦 Features / الميزات
 
-![Babylon Beauty Screenshot](screenshot.png)
+- 🔐 Authentication (Login/Register)
+- 📅 Salon Booking System
+- 🖼️ Gallery for Each Salon
+- 🗺️ Filter by City and Service
+- 🌐 Multilingual Interface
+- 🧾 Booking Confirmation & Notifications
+- 💳 Online & Cash Payment Options
+- 🧑‍💻 Admin Dashboard (Add/Edit/Delete Salons & Bookings)
+- 📊 Stats Panel for Management (Coming Soon)
 
----
+## 🧑‍💻 For Developers / للمطورين
 
-## 🚀 الميزات الرئيسية
+Built using:
+- HTML/CSS/JS
+- Firebase Auth / Firestore
+- Firestore Rules & Realtime Data
 
-- تسجيل دخول المستخدمين
-- استعراض الصالونات والخدمات
-- حجز المواعيد مع اختيار الوقت
-- معرض صور لكل صالون
-- إيصال الحجز الفوري
-- تقييم الخدمة بعد الحجز
-- إشعارات فورية (Toast)
-- صفحة "حجوزاتي"
-- لوحة إدارة للحجوزات
-- واجهة دفع إلكتروني تجريبية (تمهيدًا لربط ZainCash)
-- عرض مواقع الصالونات على الخريطة (Google Maps)
-- تحليلات إدارية (عدد الحجوزات، التقييمات)
-- دعم اللغة العربية + ثانية
-- دعم كامل لتطبيق PWA (تثبيت على الهاتف من المتصفح)
+## 🚀 How to Deploy / كيفية النشر
 
----
+1. Clone the repo:
+```bash
+git clone https://github.com/YOUR_USERNAME/babylon-beauty.git
+```
 
-## 🌐 جرّب المشروع الآن
+2. Upload contents to GitHub, and enable GitHub Pages from **Settings > Pages**, set source to `main` branch and folder to `/root`.
 
-📎 رابط مباشر (GitHub Pages):  
-`https://Juba66.github.io/babylon-beauty/`
-
-📦 ملفات المشروع المضغوطة:  
-`babylon_beauty_complete_project.zip`
-
----
-
-## ⚙️ التعليمات للمطورين
-
-1. فك الضغط عن الملفات
-2. أنشئ مستودع جديد باسم `babylon-beauty`
-3. ارفع الملفات إلى GitHub
-4. من Settings → Pages → فعل GitHub Pages من الفرع `main`
-5. افتح الرابط المباشر للتجربة
+3. Visit your app at:
+```
+https://YOUR_USERNAME.github.io/babylon-beauty/
+```
 
 ---
 
-## 📬 تواصل معنا
-
-للتطوير أو التعاون: [Juba66](https://github.com/Juba66)
+## 👤 Developed by: [Juba66](https://github.com/Juba66)

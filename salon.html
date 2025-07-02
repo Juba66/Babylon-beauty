@@ -1,20 +1,115 @@
+
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>تفاصيل الصالون</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>تفاصيل الصالون</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+    h2 { margin-top: 0; }
+    #map { height: 400px; width: 100%; margin-top: 20px; }
+    .details { background: white; padding: 20px; margin-top: 20px; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
+    .service-item { margin-bottom: 8px; }
+  </style>
 </head>
 <body>
-    <header>صالون جمالك</header>
-    <div class="card">
-        <h2>الخدمات المتوفرة:</h2>
-        <ul>
-            <li>قص شعر</li>
-            <li>تسريح</li>
-            <li>مكياج</li>
-        </ul>
-        <a href="booking.html"><button>احجزي موعدك</button></a>
-    </div>
+
+<div style="position: fixed; top: 10px; left: 10px; z-index: 10000;">
+  <select id="language-select" onchange="changeLanguage(this.value)">
+    <option value="ar">العربية</option>
+    <option value="en">English</option>
+    <option value="ku">کوردی</option>
+  </select>
+</div>
+
+  <h2>تفاصيل الصالون</h2>
+  <div class="details">
+    <h3 id="salon-name">اسم الصالون</h3>
+    <p id="salon-description">وصف الصالون سيظهر هنا.</p>
+    <h4>الخدمات:</h4>
+    <div id="services-list"></div>
+  
+    <button id="book-btn" style="margin-top:20px;padding:10px 20px;font-size:16px;background:#000;color:#fff;border:none;border-radius:5px;cursor:pointer;">
+      احجز الآن
+    </button>
+    <script>
+      document.getElementById("book-btn").addEventListener("click", () => {
+        const salonId = new URLSearchParams(window.location.search).get("id");
+        if (salonId) {
+          window.location.href = `booking.html?salonId=${salonId}`;
+        }
+      });
+    </script>
+
+  <div id="map"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js" type="module"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js" type="module"></script>
+  <script src="map.js" type="module"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap">
+  </script>
+
+<script>
+  function changeLanguage(lang) {
+    localStorage.setItem("lang", lang);
+    location.reload();
+  }
+
+  async function loadTranslation() {
+    const lang = localStorage.getItem("lang") || "ar";
+    document.getElementById("language-select").value = lang;
+    const res = await fetch("lang/" + lang + ".json");
+    const dict = await res.json();
+    for (const key in dict) {
+      const el = document.querySelector("[data-i18n='" + key + "']");
+      if (el) el.textContent = dict[key];
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", loadTranslation);
+</script>
+
+
+<div id="map" style="width: 100%; height: 300px; margin-top: 20px;"></div>
+<script>
+  function initMap() {
+    const lat = parseFloat(localStorage.getItem("salon_lat"));
+    const lng = parseFloat(localStorage.getItem("salon_lng"));
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 15,
+      center: { lat, lng },
+    });
+    new google.maps.Marker({
+      position: { lat, lng },
+      map,
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+
+
+<div id="gallery" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+</div>
+<script>
+  // صور تجريبية - يمكن لاحقًا ربطها ببيانات Firestore
+  const sampleImages = [
+    "https://via.placeholder.com/150x100?text=Salon+1",
+    "https://via.placeholder.com/150x100?text=Salon+2",
+    "https://via.placeholder.com/150x100?text=Salon+3",
+    "https://via.placeholder.com/150x100?text=Salon+4"
+  ];
+  const gallery = document.getElementById("gallery");
+  sampleImages.forEach(url => {
+    const img = document.createElement("img");
+    img.src = url;
+    img.style.width = "150px";
+    img.style.height = "100px";
+    img.style.borderRadius = "6px";
+    img.style.objectFit = "cover";
+    gallery.appendChild(img);
+  });
+</script>
+
 </body>
 </html>
