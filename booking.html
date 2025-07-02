@@ -1,21 +1,21 @@
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <title>حجز موعد</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>حجز موعد</title>
 </head>
 <body>
-    <header>حجز موعد</header>
-    <div class="card">
-        <h2>اختاري الخدمة والتاريخ</h2>
-        <form>
-            <label>الخدمة:</label>
-            <input type="text" placeholder="مثلاً: قص شعر"><br><br>
-            <label>التاريخ:</label>
-            <input type="date"><br><br>
-            <button type="submit">تأكيد الحجز</button>
-        </form>
-    </div>
+  <h2>احجز موعدك</h2>
+  <p id="auth-warning" style="color: red;">⚠️ يجب تسجيل الدخول أولاً لإجراء الحجز.</p>
+  <form id="booking-form">
+    <input type="text" id="name" placeholder="الاسم الكامل" required />
+    <input type="text" id="service" placeholder="الخدمة المطلوبة" required />
+    <input type="date" id="date" required />
+    <button type="submit">تأكيد الحجز</button>
+  </form>
+
+  <script type="module" src="./firebase.js"></script>
+  <script type="module" src="./booking.js"></script>
 </body>
 </html>
