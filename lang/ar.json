@@ -1,7 +1,11 @@
 {
-  "welcome": "مرحبًا بك في Babylon Beauty",
-  "booking": "حجز موعد",
-  "gallery": "معرض الصور",
+  "title": "بابيلون بيوتي",
+  "book_now": "احجز الآن",
+  "select_city": "اختر المدينة",
+  "select_service": "اختر الخدمة",
+  "filter": "تصفية",
+  "my_bookings": "حجوزاتي",
   "login": "تسجيل الدخول",
-  "logout": "تسجيل الخروج"
+  "logout": "تسجيل الخروج",
+  "booking_success": "✅ تم تأكيد حجزك بنجاح!"
 }
